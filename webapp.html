@@ -1,0 +1,62 @@
+  </style>
+  <script>
+    // Fetch the title of the real.html page
+    fetch('/real.html')
+      .then(response => response.text())
+      .then(html => {
+        // Extract the title from the HTML content
+        const titleMatch = html.match(/<title>(.*?)<\/title>/);
+        const pageTitle = titleMatch ? titleMatch[1] : 'White Apple 🍎💦';
+
+        // Set the web app title dynamically
+        document.title = pageTitle;
+
+        // Check if the web app is running in standalone mode (added to home screen)
+        var isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+
+        // Check if the user is on iOS or Android
+        var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        var isAndroid = /Android/.test(navigator.userAgent);
+
+        // Show the steps to add as a web app if on iOS or Android
+        if ((isIOS || isAndroid) && !isStandalone) {
+          let instructions = '';
+
+          if (isIOS) {
+            instructions = `
+              <h3>TO DOWNLOAD APP (iOS)</h3>
+              <ul>
+                <li>1. Tap the Share icon.</li>
+                <li>2. Select "Add to Home Screen".</li>
+              </ul>
+            `;
+          } else if (isAndroid) {
+            instructions = `
+              <h3>TO DOWNLOAD APP (android)</h3>
+              <ul>
+                <li>1. Tap the menu icon</li>
+                <li>2. Select "Add to Home screen" OR "Install App".</li>
+              </ul>
+            `;
+          }
+
+          document.body.innerHTML = `
+            <h1>WHITE APPLE 🍎💦 WEB APP!</h1>
+            <div>
+              ${instructions}
+              <p>Don't want to install? Web version --> <a href="/real.html">HERE!</a></p>
+            </div>
+          `;
+        } else {
+          // Redirect to real.html if not on iOS or Android or if already running in standalone mode
+          window.location.href = '/real.html';
+        }
+      })
+      .catch(error => {
+        console.error('Failed to fetch real.html:', error);
+      });
+  </script>
+</head>
+<body>
+</body>
+</html>
